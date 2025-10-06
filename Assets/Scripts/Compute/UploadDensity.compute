@@ -1,0 +1,30 @@
+/* c++ */
+#pragma kernel UploadDensity
+
+StructuredBuffer<float4> points;
+RWTexture3D<float4> Result;
+
+int3 chunkCoord;
+int numPointsPerAxis;
+
+[numthreads(8,8,8)]
+void UploadDensity(uint3 id : SV_DispatchThreadID)
+{
+    int x = id.x;
+    int y = id.y;
+    int z = id.z;
+
+    // Prevent threads outside the valid range (ceil dispatch may produce extra threads)
+    if (x >= numPointsPerAxis || y >= numPointsPerAxis || z >= numPointsPerAxis) {
+        return;
+    }
+
+    int idx = x + y * numPointsPerAxis + z * numPointsPerAxis * numPointsPerAxis;
+    float4 p = points[idx];
+    int gx = chunkCoord.x * numPointsPerAxis + x;
+    int gy = chunkCoord.y * numPointsPerAxis + y;
+    int gz = chunkCoord.z * numPointsPerAxis + z;
+
+
+    Result[int3(gx, gy, gz)] = p;
+}

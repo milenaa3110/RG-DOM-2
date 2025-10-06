@@ -1,0 +1,22 @@
+#pragma kernel ReadDensity
+
+RWStructuredBuffer<float4> points;
+Texture3D<float4> DensityTexture;
+
+int3 chunkCoord;
+int numPointsPerAxis;
+
+[numthreads(8,8,8)]
+void ReadDensity(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= numPointsPerAxis || id.y >= numPointsPerAxis || id.z >= numPointsPerAxis)
+        return;
+
+    uint i = id.x + id.y * numPointsPerAxis + id.z * numPointsPerAxis * numPointsPerAxis;
+    uint gx = chunkCoord.x * numPointsPerAxis + id.x;
+    uint gy = chunkCoord.y * numPointsPerAxis + id.y;
+    uint gz = chunkCoord.z * numPointsPerAxis + id.z;
+
+    // Read value from texture
+    points[i] = DensityTexture.Load(int4(gx, gy, gz, 0));
+}
