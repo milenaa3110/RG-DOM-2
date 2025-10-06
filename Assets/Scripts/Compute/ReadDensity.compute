@@ -17,6 +17,5 @@ void ReadDensity(uint3 id : SV_DispatchThreadID)
     uint gy = chunkCoord.y * numPointsPerAxis + id.y;
     uint gz = chunkCoord.z * numPointsPerAxis + id.z;
 
-    // Read value from texture
     points[i] = DensityTexture.Load(int4(gx, gy, gz, 0));
 }

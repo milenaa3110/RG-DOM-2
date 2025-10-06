@@ -24,7 +24,6 @@ public abstract class DensityGenerator : MonoBehaviour {
         int numThreadsPerAxis = Mathf.CeilToInt(numPointsPerAxis / (float)ThreadGroupSize);
         
         if (densityShader == null) {
-            Debug.LogError("Density shader is null on " + gameObject.name);
             return pointsBuffer;
         }
         

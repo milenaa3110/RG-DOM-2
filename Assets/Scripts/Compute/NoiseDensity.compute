@@ -2,7 +2,6 @@
 #include "Includes/Density.compute"
 #include "Includes/Noise.compute"
 
-// Noise settings
 StructuredBuffer<float3> offsets;
 int octaves;
 float lacunarity;

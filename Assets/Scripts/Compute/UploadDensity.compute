@@ -1,4 +1,3 @@
-/* c++ */
 #pragma kernel UploadDensity
 
 StructuredBuffer<float4> points;
@@ -14,7 +13,7 @@ void UploadDensity(uint3 id : SV_DispatchThreadID)
     int y = id.y;
     int z = id.z;
 
-    // Prevent threads outside the valid range (ceil dispatch may produce extra threads)
+    
     if (x >= numPointsPerAxis || y >= numPointsPerAxis || z >= numPointsPerAxis) {
         return;
     }
@@ -24,7 +23,6 @@ void UploadDensity(uint3 id : SV_DispatchThreadID)
     int gx = chunkCoord.x * numPointsPerAxis + x;
     int gy = chunkCoord.y * numPointsPerAxis + y;
     int gz = chunkCoord.z * numPointsPerAxis + z;
-
 
     Result[int3(gx, gy, gz)] = p;
 }
